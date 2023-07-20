@@ -2,10 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Rock Scissor Paper</title>
+    <title>Rock Scissors Paper</title>
 </head>
 <body>
+    <button id = "Rock">Rock</button>
+    <button id = "Scissors">Scissors</button>
+    <button id = "Paper">Paper</button>
     <script>
+
+    let playerScore = 0;
+    let computerScore = 0;
+
         function getComputerChoice() {
             let hand;
             randomNumber = Math.floor(Math.random() * 3);
@@ -26,46 +33,64 @@
             }
             if (playerSelection == "Rock") {
                 if (computerSelection == "Scissors") {
+                    playerScore++;
                     return "You Win! Rock beats Scissors";
                 } else if (computerSelection == "Paper") {
+                    computerScore++;
                     return "You Lose! Paper beats Rock";
                 }
             } else if (playerSelection == "Paper") {
                 if (computerSelection == "Rock") {
+                    playerScore++;
                     return "You Win! Paper beats Rock";
                 } else if (computerSelection == "Scissors") {
+                    computerScore++;
                     return "You Lose! Scissors beats Paper";
                 }
             } else if (playerSelection == "Scissors") {
                 if (computerSelection == "Paper") {
+                    playerScore++;
                     return "You Win! Scissors beats Paper";
                 } else if (computerSelection == "Rock") {
+                    computerScore++;
                     return "You Lose! Rock beats Scissors";
                 }
             }
         }
 
-        let playerSelection = "ROCK";
-        let computerSelection = getComputerChoice();
+    const container = document.querySelector('body');
 
-        function game() {
-            let win = 0;
-            let lost = 0;
-            for (let i = 0; i < 5; i++) {
-                playerSelection = prompt();
-                computerSelection = getComputerChoice();
-                let result = playRound(playerSelection, computerSelection)
-                console.log(result);
-                if(result.charAt(4) == "W") {
-                    win++;
-                } else if (result.charAt(4) == "L") {
-                    lost++;
-                }
-            }
-            return win + " - " + lost;
+    const score = document.createElement('div');
+    const result = document.createElement('div');
+    score.classList.add('score');
+    result.classList.add('result');
+    container.appendChild(score);
+    container.appendChild(result);
+
+    function buttonClick(event) {
+        const clickedButton = event.target;
+        result.textContent = playRound(clickedButton.id, getComputerChoice());
+        displayScore();
+    }
+
+    let buttons = document.getElementsByTagName('button');
+
+    for(const button of buttons) {
+        button.addEventListener('click', buttonClick);
+    }
+
+    function displayScore() {
+        score.textContent = `${playerScore} - ${computerScore}`;
+        if(playerScore == 5){
+            score.textContent = 'Player wins';
+            playerScore = 0;
+            computerScore = 0;
+        } else if (computerScore == 5) {
+            score.textContent = 'Computer wins';
+            playerScore = 0;
+            computerScore = 0;
         }
-
-        console.log(game());
+    }
 
     </script>
 </body>
